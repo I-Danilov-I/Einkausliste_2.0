@@ -2,4 +2,6 @@
     <string name="app_name">Einkausliste</string>
     <string name="hintergrundbild">Hinzufugen</string>
     <string name="hinzufügen">Hinzufügen</string>
+    <string name="hinzuf_gen">Hinzufügen</string>
+    <string name="geben_sie_hier_ihren_text_ein">Geben Sie hier Ihren Text ein</string>
 </resources>
