@@ -1,88 +1,206 @@
-// Importanweisungen: Diese Bibliotheken und Klassen werden benötigt, um die Funktionen der App zu realisieren
+// Import-Anweisungen: Diese Bibliotheken und Klassen werden benötigt
 package com.example.einkausliste
 
-// Importieren der Android Bundle-Klasse
+// Das Android-Paket für die Arbeit mit Farben
+import android.graphics.Color
+
+// Das Android-Paket für die Verwaltung von App-Zuständen und Daten
 import android.os.Bundle
 
-// Importieren der AppCompatActivity-Klasse aus dem androidx-Paket
-import androidx.appcompat.app.AppCompatActivity
+// Das Android-Paket für die Arbeit mit Threads und Aufgabenplanung
+import android.os.Handler
 
-// Importieren der Log-Klasse, um Debug-Nachrichten zu generieren
-import android.util.Log
-
-// Importieren der View-Klasse
+// Das Android-Paket für Benutzeroberflächenelemente
 import android.view.View
 
-// Importieren der ArrayAdapter-Klasse für die Verwaltung der ListView-Daten
+// Das Android-Paket für Animationen in der Benutzeroberfläche
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+
+// Die ArrayAdapter-Klasse wird für die Verwaltung der Daten in einer ListView verwendet
 import android.widget.ArrayAdapter
 
-// Importieren der EditText-Klasse zur Verarbeitung von Texteingaben
+// Die EditText-Klasse ist ein Eingabefeld zur Erfassung von Benutzereingaben
 import android.widget.EditText
 
-// Importieren der ListView-Klasse für die Darstellung von Listenansichten
+// Die ListView-Klasse wird für die Darstellung von Listenansichten in der Benutzeroberfläche verwendet
 import android.widget.ListView
 
+// Die Button-Klasse wird für die Verwaltung von Schaltflächen in der Benutzeroberfläche verwendet
+import android.widget.Button
 
-// Die MainActivity-Klasse erbt von AppCompatActivity, um eine Android-Anwendungsaktivität zu erstellen
+// Die AppCompatActivity-Klasse ist eine Basisklasse für Android-Anwendungsaktivitäten und stellt die Hauptkomponente der App dar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.common.util.Log
+import androidx.media3.common.util.UnstableApi
+
+@UnstableApi // Die MainActivity-Klasse erbt von AppCompatActivity, um eine Android-Anwendungsaktivität zu erstellen
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
-
-    // Deklaration von Instanzvariablen für die ListView und das EditText-Feld
+    // Deklaration von Instanzvariablen für die ListView, das EditText-Feld und den "Hinzufügen"-Button
     private lateinit var liste: ListView
     private lateinit var eingabeText: EditText
+    private lateinit var hinzufugenButton: Button
+    private var isEditTextBlinking = false
+    private lateinit var adapter: ArrayAdapter<String> // Neue Instanzvariable für den Adapter
 
-    // Die Methode onCreate wird aufgerufen, wenn die Aktivität erstellt wird
+    // Deklaration einer Instanzvariable für die Einkaufsliste als MutableSet
+    private var eintraegeSet: MutableSet<String> = HashSet()
+
+
+
+
+    // Die onCreate-Methode wird aufgerufen, wenn die Aktivität erstellt wird
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Das Layout der Aktivität festlegen
         setContentView(R.layout.activity_main)
-
-        // Debug-Nachrichten, um den Lebenszyklus der Aktivität zu verfolgen
-        Log.d("MyLogAct!", "onCreate1")
-        Log.d("MyLogAct!", "onCreate2")
 
         // Vorhandene Einträge in einer Liste
         val eintraege = mutableListOf("Wasser", "Kartoffel", "Sonnenblumenöl")
 
-        // Adapter für die ListView erstellen und mit den Einträgen verknüpfen
-        val adapter = ArrayAdapter(this, R.layout.list_item, R.id.list_item_text, eintraege)
 
-        // ListView im Layout finden und Adapter zuweisen
+        // Adapter für die ListView erstellen und mit den Einträgen verknüpfen
+        adapter = ArrayAdapter(this, R.layout.list_item, R.id.list_item_text, eintraege)
+
+        // Die ListView im Layout finden und den Adapter zuweisen
         liste = findViewById(R.id.liste)
         liste.adapter = adapter
         liste.visibility = View.VISIBLE
 
-        // EditText-Feld im Layout finden
+        // Das EditText-Feld im Layout finden
         eingabeText = findViewById(R.id.eingabeText)
+        // Den "Hinzufügen"-Button im Layout finden
+        hinzufugenButton = findViewById(R.id.hinzufugen)
+
+        // Starten Sie die Blinkanimation des EditText-Hintergrunds beim Starten der Aktivität
+        startEditTextBlinkAnimation()
+        loadEinkaufsliste()
+        Log.d("MyLogAct", "onCreate")
+
     }
 
-    // onStart, onResume, onPause usw. - Methoden bleiben unverändert
 
-    // Funktion zum Hinzufügen eines neuen Eintrags
+
+    //---------------------------------------------------------------------------------------------
+    // Starten Sie die Blinkanimation des EditText-Hintergrunds
+    private fun startEditTextBlinkAnimation() {
+        if (!isEditTextBlinking) {
+            // Erstellen Sie eine Alpha-Blinkanimation
+            val blinkAnimation = AlphaAnimation(0.1f, 1.0f)
+            blinkAnimation.duration = 2000 // Dauer der Animation in Millisekunden
+            blinkAnimation.startOffset = 20 // Startverzögerung der Animation
+            blinkAnimation.repeatCount = Animation.INFINITE // Unendlich oft wiederholen
+
+            // Starten Sie die Animation auf dem EditText
+            eingabeText.startAnimation(blinkAnimation)
+
+            // Ändern Sie die Hintergrundfarbe des EditText während des Blinkens
+            val handler = Handler()
+            val colors = intArrayOf(Color.TRANSPARENT, Color.TRANSPARENT) // Hier können Sie die Farben anpassen
+            var colorIndex = 0
+
+            handler.post(object : Runnable {
+                override fun run() {
+                    if (isEditTextBlinking) {
+                        eingabeText.setBackgroundColor(colors[colorIndex])
+                        colorIndex = (colorIndex + 1) % colors.size
+                        handler.postDelayed(this, 500) // Ändern Sie die Geschwindigkeit nach Bedarf
+                    } else {
+                        eingabeText.setBackgroundColor(Color.TRANSPARENT)
+                    }
+                }
+            })
+
+            isEditTextBlinking = true
+        }
+    }
+
+
+    //-------------------------------------------------------------------------------------------------
+    // Die Methode zum Hinzufügen eines neuen Eintrags
     fun hinzufugen(view: View) {
-        Log.d("MyLogAct!", "Hinzufügen")
-
-        // Das Eingabefeld sichtbar machen
-        eingabeText.visibility = View.VISIBLE
-
-        // Text aus dem EditText-Feld abrufen
         val neuerEintrag = eingabeText.text.toString()
 
-        // Sicherstellen, dass der Text nicht leer ist
         if (neuerEintrag.isNotEmpty()) {
-            // Den Eintrag dem Adapter hinzufügen und die ListView aktualisieren
             val adapter = liste.adapter as? ArrayAdapter<String>
 
             if (adapter != null) {
                 adapter.add(neuerEintrag)
                 adapter.notifyDataSetChanged()
-            } else {
-                // Behandeln Sie den Fall, in dem der Adapter keine ArrayAdapter<String> ist.
-                Log.e("MyLogAct!", "Ungültiger Adapter-Typ")
-            }
 
-            // Das EditText-Feld leeren
-            eingabeText.text.clear()
+                // Füge den neuen Eintrag auch zum eintraegeSet hinzu
+                eintraegeSet.add(neuerEintrag)
+
+                // Das EditText-Feld leeren
+                eingabeText.text.clear()
+                saveEinkaufsliste()
+                Log.d("MyLogAct", "hinzufugen")
+            }
         }
+    }
+
+
+//_____Speichere die Einkaufsliste in den SharedPreferences________________________________________
+    private fun saveEinkaufsliste() {
+        val eintraegeList = eintraegeSet.toMutableList()
+        val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putStringSet("einkaufsliste", eintraegeList.toSet())
+        editor.apply()
+        Log.d("MyLogAct", "saveEinkausliste")
+    }
+
+
+// Lade die Einkaufsliste aus den SharedPreferences und kombiniere sie mit den Standard-Einträgen
+    private fun loadEinkaufsliste() {
+        val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
+        val savedEintraegeSet = sharedPreferences.getStringSet("einkaufsliste", emptySet())
+
+        if (savedEintraegeSet != null) {
+            eintraegeSet.clear()  // Lösche alle Einträge aus der aktuellen eintraegeSet
+            eintraegeSet.addAll(savedEintraegeSet)  // Füge die gespeicherten Einträge hinzu
+        }
+
+        adapter.clear()
+        adapter.addAll(eintraegeSet)
+        adapter.notifyDataSetChanged()
+        Log.d("MyLogAct", "loadEinkaufsliste")
+    }
+
+
+
+
+
+
+
+
+    //-------------------------------------------------------------------------------------------------
+    override fun onStart() {
+        super.onStart()
+        Log.d("MyLogAct", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MyLogAct", "onResume")
+    }
+
+
+    override fun onPause() {
+        saveEinkaufsliste()
+        super.onPause()
+        Log.d("MyLogAct", "onPause")
+    }
+
+    override fun onStop() {
+        saveEinkaufsliste()
+        super.onStop()
+        Log.d("MyLogAct", "onStop")
+    }
+
+    override fun onDestroy() {
+        saveEinkaufsliste()
+        super.onDestroy()
+        Log.d("MyLogAct", "onDestroy")
     }
 }
