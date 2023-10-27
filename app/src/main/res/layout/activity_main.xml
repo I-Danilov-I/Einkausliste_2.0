@@ -40,36 +40,43 @@
         app:layout_constraintTop_toBottomOf="@+id/eingabeText"
         tools:ignore="VisualLintButtonSize" />
 
+
     <ListView
         android:id="@+id/liste"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#4A00BCD4"
+        android:background="#2200BCD4"
+        android:cacheColorHint="@color/white"
+        android:divider="@color/design_default_color_secondary"
+        android:textColor="#FF0000"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/eingabeText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <EditText
         android:id="@+id/eingabeText"
-        android:layout_width="415dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="384dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:autofillHints="Kartoffel"
         android:hint="@string/geben_sie_hier_ihren_text_ein"
         android:inputType="text"
-        android:textColorHint="#757575"
+        android:rotationX="17"
+        android:textAlignment="center"
+        android:textColorHint="#CD0B0B"
+        android:textSize="24sp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/hinzufugen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/liste"
-        tools:ignore="VisualLintBounds" />
+        tools:ignore="VisualLintBounds,TouchTargetSizeCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
