@@ -8,19 +8,25 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/hintergrundbild"
         android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/alte_schwarze_wand_hintergrund_textur_mit_rand_schwarz_vignette_ba"
         tools:ignore="VisualLintBounds" />
 
+
     <Button
         android:id="@+id/hinzufugen"
-        android:layout_width="294dp"
-        android:layout_height="0dp"
+        android:layout_width="365dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="16dp"
         android:background="@android:drawable/button_onoff_indicator_on"
         android:onClick="hinzufugen"
         android:text="@string/hinzuf_gen"
@@ -31,37 +37,39 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eingabeText" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/eingabeText"
+        tools:ignore="VisualLintButtonSize" />
 
     <ListView
         android:id="@+id/liste"
-        android:layout_width="410dp"
-        android:layout_height="658dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="#4A00BCD4"
-        android:visibility="gone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/eingabeText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <EditText
         android:id="@+id/eingabeText"
-        android:layout_width="332dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="392dp"
-        android:layout_marginBottom="156dp"
+        android:layout_width="415dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="18dp"
+        android:autofillHints="Kartoffel"
         android:hint="@string/geben_sie_hier_ihren_text_ein"
+        android:inputType="text"
         android:textColorHint="#757575"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/hinzufugen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:inputType="text"
-        android:autofillHints="" />
-
+        app:layout_constraintTop_toBottomOf="@+id/liste"
+        tools:ignore="VisualLintBounds" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
