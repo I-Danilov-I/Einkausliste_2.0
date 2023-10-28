@@ -34,7 +34,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 
-@UnstableApi // Die MainActivity-Klasse erbt von AppCompatActivity, um eine Android-Anwendungsaktivität zu erstellen
+// Die MainActivity-Klasse erbt von AppCompatActivity, um eine Android-Anwendungsaktivität zu erstellen
+@UnstableApi
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     // Deklaration von Instanzvariablen für die ListView, das EditText-Feld und den "Hinzufügen"-Button
@@ -42,13 +43,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var eingabeText: EditText
     private lateinit var hinzufugenButton: Button
     private var isEditTextBlinking = false
-    private lateinit var adapter: ArrayAdapter<String> // Neue Instanzvariable für den Adapter
-
+    // Neue Instanzvariable für den Adapter
+    private lateinit var adapter: ArrayAdapter<String>
     // Deklaration einer Instanzvariable für die Einkaufsliste als MutableSet
     private var eintraegeSet: MutableSet<String> = HashSet()
-
-
-
 
     // Die onCreate-Methode wird aufgerufen, wenn die Aktivität erstellt wird
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 
         // Vorhandene Einträge in einer Liste
         val eintraege = mutableListOf("Wasser", "Kartoffel", "Sonnenblumenöl")
-
 
         // Adapter für die ListView erstellen und mit den Einträgen verknüpfen
         adapter = ArrayAdapter(this, R.layout.list_item, R.id.list_item_text, eintraege)
@@ -76,12 +73,8 @@ class MainActivity : AppCompatActivity() {
         startEditTextBlinkAnimation()
         loadEinkaufsliste()
         Log.d("MyLogAct", "onCreate")
-
     }
 
-
-
-    //---------------------------------------------------------------------------------------------
     // Starten Sie die Blinkanimation des EditText-Hintergrunds
     private fun startEditTextBlinkAnimation() {
         if (!isEditTextBlinking) {
@@ -115,8 +108,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    //-------------------------------------------------------------------------------------------------
     // Die Methode zum Hinzufügen eines neuen Eintrags
     fun hinzufugen(view: View) {
         val neuerEintrag = eingabeText.text.toString()
@@ -139,8 +130,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-//_____Speichere die Einkaufsliste in den SharedPreferences________________________________________
+    // Speichere die Einkaufsliste in den SharedPreferences
     private fun saveEinkaufsliste() {
         val eintraegeList = eintraegeSet.toMutableList()
         val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
@@ -150,8 +140,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "saveEinkausliste")
     }
 
-
-// Lade die Einkaufsliste aus den SharedPreferences und kombiniere sie mit den Standard-Einträgen
+    // Lade die Einkaufsliste aus den SharedPreferences und kombiniere sie mit den Standard-Einträgen
     private fun loadEinkaufsliste() {
         val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
         val savedEintraegeSet = sharedPreferences.getStringSet("einkaufsliste", emptySet())
@@ -167,42 +156,36 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "loadEinkaufsliste")
     }
 
-
-
-
-
-
-
-
-    //-------------------------------------------------------------------------------------------------
+    // Die onStart-Methode wird aufgerufen, wenn die Aktivität sichtbar wird
     override fun onStart() {
         super.onStart()
         Log.d("MyLogAct", "onStart")
     }
 
+    // Die onResume-Methode wird aufgerufen, wenn die Aktivität in den Vordergrund tritt
     override fun onResume() {
         super.onResume()
         Log.d("MyLogAct", "onResume")
     }
 
-
+    // Die onPause-Methode wird aufgerufen, wenn die Aktivität pausiert wird
     override fun onPause() {
         saveEinkaufsliste()
         super.onPause()
         Log.d("MyLogAct", "onPause")
     }
 
+    // Die onStop-Methode wird aufgerufen, wenn die Aktivität nicht mehr sichtbar ist
     override fun onStop() {
         saveEinkaufsliste()
         super.onStop()
         Log.d("MyLogAct", "onStop")
     }
 
+    // Die onDestroy-Methode wird aufgerufen, wenn die Aktivität zerstört wird
     override fun onDestroy() {
         saveEinkaufsliste()
         super.onDestroy()
         Log.d("MyLogAct", "onDestroy")
     }
 }
-
-
