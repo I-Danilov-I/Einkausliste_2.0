@@ -8,6 +8,7 @@ import android.view.View // Importieren des Android-Pakets für die Ansicht
 import android.view.animation.AlphaAnimation // Importieren der Klasse für die Alpha-Animation
 import android.view.animation.Animation // Importieren der Klasse für Animationen
 import android.widget.EditText // Importieren der EditText-Klasse
+import android.util.Log // Importieren des Android-Log-Pakets
 
 class TextBlinker(private val editText: EditText) {
     private var isBlinking = false
@@ -45,6 +46,7 @@ class TextBlinker(private val editText: EditText) {
             })
 
             isBlinking = true
+            Log.d("MyLogAct", "Blink animation started") // Beispiel-Log-Nachric
         }
     }
 
@@ -53,5 +55,6 @@ class TextBlinker(private val editText: EditText) {
         isBlinking = false // Setzen von isBlinking auf false, um die Animation zu stoppen
         editText.clearAnimation() // Löschen der Animation auf dem EditText-Feld
         editText.setBackgroundColor(Color.TRANSPARENT) // Zurücksetzen der Hintergrundfarbe auf transparent
+        Log.d("MyLogAct", "Blink animation stopped") // Beispiel-Log-Nachricht
     }
 }
