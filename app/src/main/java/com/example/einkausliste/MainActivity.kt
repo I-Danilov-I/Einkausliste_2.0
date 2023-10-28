@@ -204,3 +204,5 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "onDestroy")
     }
 }
+
+
