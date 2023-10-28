@@ -13,35 +13,20 @@ import com.example.einkausliste.TextBlinker
 
 @UnstableApi
 class MainActivity : AppCompatActivity() {
-    private lateinit var liste: ListView
-    private lateinit var eingabeText: EditText
-    private lateinit var hinzufugenButton: Button
-    private lateinit var adapter: ArrayAdapter<String>
-    private val eintraege = mutableListOf("Wasser", "Kartoffel", "Sonnenblumenöl")
-    private lateinit var textBlinker: TextBlinker
+    lateinit var liste: ListView
+    lateinit var eingabeText: EditText
+    lateinit var hinzufugenButton: Button
+    lateinit var adapter: ArrayAdapter<String>
+    val eintraege = mutableListOf("Wasser", "Kartoffel", "Sonnenblumenöl")
+    lateinit var textBlinker: TextBlinker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ui()
+        this.setupUI()
         loadEinkaufsliste()
         Log.d("MyLogAct", "onCreate")
     }
-
-    private fun ui(){
-        adapter = ArrayAdapter(this, R.layout.list_item, R.id.list_item_text, eintraege)
-        liste = findViewById(R.id.liste)
-        liste.adapter = adapter
-        liste.visibility = View.VISIBLE
-
-        eingabeText = findViewById(R.id.eingabeText)
-        hinzufugenButton = findViewById(R.id.hinzufugen)
-
-        textBlinker = TextBlinker(eingabeText)
-        textBlinker.startBlinkAnimation()
-
-    }
-
 
     fun hinzufugen(view: View) {
         val neuerEintrag = eingabeText.text.toString()
@@ -51,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
             eingabeText.text.clear()
             saveEinkaufsliste()
-            Log.d("MyLogAct", "hinzufugen")
+            Log.d("MyLogAct", "com.example.einkausliste.com.example.einkausliste.hinzufugen")
         }
     }
 
