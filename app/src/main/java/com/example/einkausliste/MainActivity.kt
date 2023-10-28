@@ -13,10 +13,6 @@ import android.os.Handler
 // Das Android-Paket für Benutzeroberflächenelemente
 import android.view.View
 
-// Das Android-Paket für Animationen in der Benutzeroberfläche
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-
 // Die ArrayAdapter-Klasse wird für die Verwaltung der Daten in einer ListView verwendet
 import android.widget.ArrayAdapter
 
@@ -34,19 +30,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 
+
+// Importieren Sie die EditTextBlinker-Klasse
+import com.example.einkausliste.TextBlinker
+
 // Die MainActivity-Klasse erbt von AppCompatActivity, um eine Android-Anwendungsaktivität zu erstellen
 @UnstableApi
-@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     // Deklaration von Instanzvariablen für die ListView, das EditText-Feld und den "Hinzufügen"-Button
     private lateinit var liste: ListView
     private lateinit var eingabeText: EditText
     private lateinit var hinzufugenButton: Button
-    private var isEditTextBlinking = false
+
     // Neue Instanzvariable für den Adapter
     private lateinit var adapter: ArrayAdapter<String>
     // Deklaration einer Instanzvariable für die Einkaufsliste als MutableSet
     private var eintraegeSet: MutableSet<String> = HashSet()
+
 
     // Die onCreate-Methode wird aufgerufen, wenn die Aktivität erstellt wird
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,44 +69,17 @@ class MainActivity : AppCompatActivity() {
         // Den "Hinzufügen"-Button im Layout finden
         hinzufugenButton = findViewById(R.id.hinzufugen)
 
+
         // Starten Sie die Blinkanimation des EditText-Hintergrunds beim Starten der Aktivität
-        startEditTextBlinkAnimation()
+        val textBlinker = TextBlinker(eingabeText)
+        textBlinker.startBlinkAnimation()
+
+
         loadEinkaufsliste()
         Log.d("MyLogAct", "onCreate")
     }
 
-    // Starten Sie die Blinkanimation des EditText-Hintergrunds
-    private fun startEditTextBlinkAnimation() {
-        if (!isEditTextBlinking) {
-            // Erstellen Sie eine Alpha-Blinkanimation
-            val blinkAnimation = AlphaAnimation(0.1f, 1.0f)
-            blinkAnimation.duration = 2000 // Dauer der Animation in Millisekunden
-            blinkAnimation.startOffset = 20 // Startverzögerung der Animation
-            blinkAnimation.repeatCount = Animation.INFINITE // Unendlich oft wiederholen
 
-            // Starten Sie die Animation auf dem EditText
-            eingabeText.startAnimation(blinkAnimation)
-
-            // Ändern Sie die Hintergrundfarbe des EditText während des Blinkens
-            val handler = Handler()
-            val colors = intArrayOf(Color.TRANSPARENT, Color.TRANSPARENT) // Hier können Sie die Farben anpassen
-            var colorIndex = 0
-
-            handler.post(object : Runnable {
-                override fun run() {
-                    if (isEditTextBlinking) {
-                        eingabeText.setBackgroundColor(colors[colorIndex])
-                        colorIndex = (colorIndex + 1) % colors.size
-                        handler.postDelayed(this, 500) // Ändern Sie die Geschwindigkeit nach Bedarf
-                    } else {
-                        eingabeText.setBackgroundColor(Color.TRANSPARENT)
-                    }
-                }
-            })
-
-            isEditTextBlinking = true
-        }
-    }
 
     // Die Methode zum Hinzufügen eines neuen Eintrags
     fun hinzufugen(view: View) {
@@ -129,6 +102,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
 
     // Speichere die Einkaufsliste in den SharedPreferences
     private fun saveEinkaufsliste() {
@@ -156,6 +132,11 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "loadEinkaufsliste")
     }
 
+
+
+
+
+//-------------------------------------------------------------------------------------------------
     // Die onStart-Methode wird aufgerufen, wenn die Aktivität sichtbar wird
     override fun onStart() {
         super.onStart()
@@ -184,6 +165,7 @@ class MainActivity : AppCompatActivity() {
 
     // Die onDestroy-Methode wird aufgerufen, wenn die Aktivität zerstört wird
     override fun onDestroy() {
+        // Specihern der Einträge
         saveEinkaufsliste()
         super.onDestroy()
         Log.d("MyLogAct", "onDestroy")
