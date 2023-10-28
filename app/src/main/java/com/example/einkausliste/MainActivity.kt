@@ -9,82 +9,58 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
-import com.example.einkausliste.TextBlinker
 
 @UnstableApi
 class MainActivity : AppCompatActivity() {
-    lateinit var liste: ListView
-    lateinit var eingabeText: EditText
-    lateinit var hinzufugenButton: Button
-    lateinit var adapter: ArrayAdapter<String>
-    val eintraege = mutableListOf("Wasser", "Kartoffel", "Sonnenblumenöl")
-    lateinit var textBlinker: TextBlinker
+    lateinit var liste: ListView // Die ListView für die Einkaufsliste
+    lateinit var eingabeText: EditText // Das EditText-Feld für die Eingabe
+    lateinit var hinzufugenButton: Button // Die Schaltfläche zum Hinzufügen
+    lateinit var adapter: ArrayAdapter<String> // Ein Adapter für die ListView
+    val eintraege = mutableListOf("Wasser", "Kartoffel", "Sonnenblumenöl") // Eine Liste von Einträgen
+    lateinit var textBlinker: TextBlinker // Ein TextBlinker-Objekt für die Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        this.setupUI()
-        loadEinkaufsliste()
-        Log.d("MyLogAct", "onCreate")
+        setContentView(R.layout.activity_main) // Die Benutzeroberfläche der Activity festlegen
+
+        this.setupUI() // Die Benutzeroberfläche initialisieren
+        loadEinkaufsliste() // Die Einkaufsliste aus den gespeicherten Daten laden
+        Log.d("MyLogAct", "onCreate") // Log-Nachricht: Activity wurde erstellt
     }
 
-    fun hinzufugen(view: View) {
-        val neuerEintrag = eingabeText.text.toString()
-
-        if (neuerEintrag.isNotEmpty()) {
-            adapter.add(neuerEintrag)
-            adapter.notifyDataSetChanged()
-            eingabeText.text.clear()
-            saveEinkaufsliste()
-            Log.d("MyLogAct", "com.example.einkausliste.com.example.einkausliste.hinzufugen")
-        }
-    }
-
+    // Methode zum Speichern der Einkaufsliste
     private fun saveEinkaufsliste() {
-        val eintraegeSet = HashSet(eintraege)
-        val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putStringSet("einkaufsliste", eintraegeSet)
-        editor.apply()
-        Log.d("MyLogAct", "saveEinkaufsliste")
+        val eintraegeSet = HashSet(eintraege) // Die Einträge in ein Set umwandeln
+        val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE) // SharedPreferences initialisieren
+        val editor = sharedPreferences.edit() // Einen Editor für SharedPreferences erstellen
+        editor.putStringSet("einkaufsliste", eintraegeSet) // Die Einkaufsliste in SharedPreferences speichern
+        editor.apply() // Änderungen in SharedPreferences anwenden
+        Log.d("MyLogAct", "saveEinkaufsliste") // Log-Nachricht: Einkaufsliste wurde gespeichert
     }
 
+    // Methode zum Laden der Einkaufsliste
     private fun loadEinkaufsliste() {
-        val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
-        val savedEintraegeSet = sharedPreferences.getStringSet("einkaufsliste", null)
+        val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE) // SharedPreferences initialisieren
+        val savedEintraegeSet = sharedPreferences.getStringSet("einkaufsliste", null) // Einkaufsliste aus SharedPreferences laden
 
         if (savedEintraegeSet != null) {
-            eintraege.clear()
-            eintraege.addAll(savedEintraegeSet)
-            adapter.notifyDataSetChanged()
+            eintraege.clear() // Die aktuelle Liste leeren
+            eintraege.addAll(savedEintraegeSet) // Gespeicherte Einträge zur Liste hinzufügen
+            adapter.notifyDataSetChanged() // Den Adapter aktualisieren, um die Änderungen in der ListView anzuzeigen
         }
-        Log.d("MyLogAct", "loadEinkaufsliste")
+        Log.d("MyLogAct", "loadEinkaufsliste") // Log-Nachricht: Einkaufsliste wurde geladen
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("MyLogAct", "onStart")
-    }
+    // ...
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("MyLogAct", "onResume")
-    }
+    // Weitere Activity-Lebenszyklus-Methoden, hier nicht kommentiert
 
-    override fun onPause() {
-        super.onPause()
-        Log.d("MyLogAct", "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("MyLogAct", "onStop")
-    }
+    // ...
 
     override fun onDestroy() {
-        saveEinkaufsliste()
-        textBlinker.stopBlinkAnimation()
+        saveEinkaufsliste() // Die Einkaufsliste speichern, bevor die Activity zerstört wird
+        textBlinker.stopBlinkAnimation() // Die TextBlinker-Animation stoppen
         super.onDestroy()
-        Log.d("MyLogAct", "onDestroy")
+        Log.d("MyLogAct", "onDestroy") // Log-Nachricht: Activity wurde zerstört
     }
 }
