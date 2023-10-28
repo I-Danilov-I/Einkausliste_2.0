@@ -23,9 +23,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        ui()
+        loadEinkaufsliste()
+        Log.d("MyLogAct", "onCreate")
+    }
 
+    private fun ui(){
         adapter = ArrayAdapter(this, R.layout.list_item, R.id.list_item_text, eintraege)
-
         liste = findViewById(R.id.liste)
         liste.adapter = adapter
         liste.visibility = View.VISIBLE
@@ -36,9 +40,8 @@ class MainActivity : AppCompatActivity() {
         textBlinker = TextBlinker(eingabeText)
         textBlinker.startBlinkAnimation()
 
-        loadEinkaufsliste()
-        Log.d("MyLogAct", "onCreate")
     }
+
 
     fun hinzufugen(view: View) {
         val neuerEintrag = eingabeText.text.toString()
