@@ -30,7 +30,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 
-
 // Importieren Sie die EditTextBlinker-Klasse
 import com.example.einkausliste.TextBlinker
 
@@ -47,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     // Deklaration einer Instanzvariable für die Einkaufsliste als MutableSet
     private var eintraegeSet: MutableSet<String> = HashSet()
 
+    // Instanzvariable für die TextBlinker-Klasse
+    private lateinit var textBlinker: TextBlinker
 
     // Die onCreate-Methode wird aufgerufen, wenn die Aktivität erstellt wird
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,17 +70,13 @@ class MainActivity : AppCompatActivity() {
         // Den "Hinzufügen"-Button im Layout finden
         hinzufugenButton = findViewById(R.id.hinzufugen)
 
-
         // Starten Sie die Blinkanimation des EditText-Hintergrunds beim Starten der Aktivität
-        val textBlinker = TextBlinker(eingabeText)
+        textBlinker = TextBlinker(eingabeText)
         textBlinker.startBlinkAnimation()
-
 
         loadEinkaufsliste()
         Log.d("MyLogAct", "onCreate")
     }
-
-
 
     // Die Methode zum Hinzufügen eines neuen Eintrags
     fun hinzufugen(view: View) {
@@ -102,9 +99,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
 
     // Speichere die Einkaufsliste in den SharedPreferences
     private fun saveEinkaufsliste() {
@@ -132,11 +126,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "loadEinkaufsliste")
     }
 
-
-
-
-
-//-------------------------------------------------------------------------------------------------
     // Die onStart-Methode wird aufgerufen, wenn die Aktivität sichtbar wird
     override fun onStart() {
         super.onStart()
@@ -165,9 +154,11 @@ class MainActivity : AppCompatActivity() {
 
     // Die onDestroy-Methode wird aufgerufen, wenn die Aktivität zerstört wird
     override fun onDestroy() {
-        // Specihern der Einträge
+        // Speichern der Einträge
         saveEinkaufsliste()
+        textBlinker.stopBlinkAnimation()
         super.onDestroy()
         Log.d("MyLogAct", "onDestroy")
     }
 }
+
