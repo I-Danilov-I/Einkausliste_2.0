@@ -1,5 +1,4 @@
 package com.example.einkausliste
-
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -13,19 +12,17 @@ import com.example.einkausliste.TextBlinker
 
 @UnstableApi
 class MainActivity : AppCompatActivity() {
-    lateinit var liste: ListView // Die ListView zur Anzeige der Einkaufsliste
     lateinit var eingabeText: EditText // Das EditText-Feld zur Eingabe neuer Einträge
     lateinit var hinzufugenButton: Button // Der Button zum Hinzufügen neuer Einträge
     lateinit var adapter: ArrayAdapter<String> // Der Adapter für die ListView
     val eintraege = mutableListOf("Wasser", "Kartoffel", "Sonnenblumenöl") // Die Liste der Einkäufe
-    lateinit var textBlinker: TextBlinker // Ein TextBlinker-Objekt zur Animation des EditText-Felds
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         // Initialisierung der Benutzeroberfläche
-        this.setupUI()
+        setupUI()
 
         // Laden der Einkaufsliste aus den SharedPreferences
         loadEinkaufsliste()
@@ -125,7 +122,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         // Speichern der Einkaufsliste und Stoppen der Textanimation
         saveEinkaufsliste()
-        textBlinker.stopBlinkAnimation()
         super.onDestroy()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onDestroy")
