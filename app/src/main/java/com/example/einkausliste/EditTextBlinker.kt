@@ -49,12 +49,4 @@ class TextBlinker(private val editText: EditText) {
             Log.d("MyLogAct", "Blink animation started") // Beispiel-Log-Nachric
         }
     }
-
-    // Die Methode stopBlinkAnimation stoppt die Blinkanimation
-    fun stopBlinkAnimation() {
-        isBlinking = false // Setzen von isBlinking auf false, um die Animation zu stoppen
-        editText.clearAnimation() // Löschen der Animation auf dem EditText-Feld
-        editText.setBackgroundColor(Color.TRANSPARENT) // Zurücksetzen der Hintergrundfarbe auf transparent
-        Log.d("MyLogAct", "Blink animation stopped") // Beispiel-Log-Nachricht
-    }
 }
