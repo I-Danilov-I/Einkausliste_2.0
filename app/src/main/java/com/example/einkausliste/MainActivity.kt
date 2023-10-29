@@ -1,18 +1,14 @@
-
 // Importieren von erforderlichen Klassen und Bibliotheken
 package com.example.einkausliste
-import android.os.Bundle
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.ListView
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.common.util.Log
-import androidx.media3.common.util.UnstableApi
-import com.example.einkausliste.TextBlinker
 
-
+import android.os.Bundle // Import für die Bundle-Klasse, um Daten zwischen Aktivitäten zu übertragen
+import android.view.View // Import für die View-Klasse, die für die Benutzeroberfläche verwendet wird
+import android.widget.ArrayAdapter // Import für die ArrayAdapter-Klasse, um Daten an eine ListView zu binden
+import android.widget.EditText // Import für die EditText-Klasse, die ein Texteingabefeld repräsentiert
+import android.widget.Button // Import für die Button-Klasse, die eine Schaltflächen-UI repräsentiert
+import androidx.appcompat.app.AppCompatActivity // Import für die AppCompatActivity-Klasse, die die Basisaktivitätsklasse für Android-Apps ist
+import androidx.media3.common.util.Log // Import für die Log-Klasse zur Erstellung und Anzeige von Log-Nachrichten
+import androidx.media3.common.util.UnstableApi // Import für die UnstableApi-Annotation zur Kennzeichnung von instabilen APIs
 
 @UnstableApi
 class MainActivity : AppCompatActivity() {
@@ -24,15 +20,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Setzen des Layouts für die Aktivität aus der XML-Datei
         setContentView(R.layout.activity_main)
 
         // Initialisierung der Benutzeroberfläche
         setupUI()
 
-        // Laden der Einkaufsliste aus den SharedPreferences
-
-        loadEinkaufsliste()
+        // Laden der Einkaufsliste und Aktualisieren der eintraege-Liste
+        eintraege.clear() // Löscht die Standard-Einträge
+        eintraege.addAll(loadEinkaufsliste(this)) // Fügt die geladenen Einträge hinzu
 
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onCreate")
@@ -42,45 +37,7 @@ class MainActivity : AppCompatActivity() {
     fun hinzufugen(view: View) {
         // Rufen Sie die ausgelagerte Funktion auf und übergeben Sie die erforderlichen Parameter.
         hinzufugen(view, adapter, eingabeText, eintraege)
-    }
-
-    // Diese Funktion wird aufgerufen, um die Einkaufsliste in den SharedPreferences zu speichern.
-    private fun saveEinkaufsliste() {
-        // Konvertieren der Liste der Einkäufe in ein Set
-        val eintraegeSet = HashSet(eintraege)
-
-        // Zugriff auf die SharedPreferences für die Einkaufsliste
-        val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
-
-        // Erstellen eines Editors für die SharedPreferences
-        val editor = sharedPreferences.edit()
-
-        // Speichern des Sets in den SharedPreferences
-        editor.putStringSet("einkaufsliste", eintraegeSet)
-        editor.apply() // Anwenden der Änderungen
-
-        // Log-Nachricht zur Anzeige in der Konsole
-        Log.d("MyLogAct", "Einkaufsliste gespeichert")
-    }
-
-    // Diese Funktion wird aufgerufen, um die Einkaufsliste aus den SharedPreferences zu laden.
-    private fun loadEinkaufsliste() {
-        // Zugriff auf die SharedPreferences für die Einkaufsliste
-        val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
-
-        // Laden des Sets aus den SharedPreferences
-        val savedEintraegeSet = sharedPreferences.getStringSet("einkaufsliste", null)
-
-        if (savedEintraegeSet != null) {
-            // Überprüfung, ob gespeicherte Einträge vorhanden sind
-            eintraege.clear()
-            eintraege.addAll(savedEintraegeSet)
-            // Aktualisieren der ListView durch Benachrichtigung des Adapters
-            adapter.notifyDataSetChanged()
-        }
-
-        // Log-Nachricht zur Anzeige in der Konsole
-        Log.d("MyLogAct", "Einkaufsliste geladen")
+        saveEinkaufsliste(this, eintraege)
     }
 
     // Diese Funktion wird aufgerufen, wenn die Aktivität gestartet wird.
@@ -99,7 +56,6 @@ class MainActivity : AppCompatActivity() {
 
     // Diese Funktion wird aufgerufen, wenn die Aktivität pausiert wird.
     override fun onPause() {
-        saveEinkaufsliste()
         super.onPause()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onPause")
@@ -107,7 +63,6 @@ class MainActivity : AppCompatActivity() {
 
     // Diese Funktion wird aufgerufen, wenn die Aktivität gestoppt wird.
     override fun onStop() {
-        saveEinkaufsliste()
         super.onStop()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onStop")
@@ -115,8 +70,6 @@ class MainActivity : AppCompatActivity() {
 
     // Diese Funktion wird aufgerufen, wenn die Aktivität zerstört wird.
     override fun onDestroy() {
-        // Speichern der Einkaufsliste und Stoppen der Textanimation
-        saveEinkaufsliste()
         super.onDestroy()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onDestroy")

@@ -1,12 +1,13 @@
 package com.example.einkausliste
 
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import androidx.media3.common.util.Log
-import androidx.annotation.OptIn
-import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.common.util.UnstableApi
+import android.view.View // Importieren der View-Klasse aus dem Android-Framework, die für die Benutzeroberfläche verwendet wird
+import android.widget.ArrayAdapter // Importieren der ArrayAdapter-Klasse aus dem Android-Framework, um Daten an eine ListView zu binden
+import android.widget.ListView // Importieren der ListView-Klasse aus dem Android-Framework, um eine Liste anzuzeigen
+import androidx.media3.common.util.Log // Importieren der Log-Klasse aus dem Android-Framework, um Log-Nachrichten zu erstellen und anzuzeigen
+import androidx.annotation.OptIn // Importieren der OptIn-Annotation aus dem Android-Framework
+import androidx.appcompat.app.AppCompatActivity // Importieren der AppCompatActivity-Klasse aus dem Android-Framework, um eine Aktivität zu erstellen
+import androidx.media3.common.util.UnstableApi // Importieren der UnstableApi-Klasse aus dem Android-Framework für die Nutzung von nicht stabilen APIs
+
 
 @OptIn(UnstableApi::class)
 fun MainActivity.setupUI() {
@@ -27,7 +28,7 @@ fun MainActivity.setupUI() {
     hinzufugenButton = findViewById(R.id.hinzufugen)
 
     // Initialisierung des TextBlinker-Objekts und Starten der Blinkanimation
-    val textBlinker: TextBlinker =
+    val textBlinker =
         TextBlinker(eingabeText) // Ein TextBlinker-Objekt zur Animation des EditText-Felds
     textBlinker.startBlinkAnimation()
 
