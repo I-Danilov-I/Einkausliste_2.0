@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Diese Funktion wird aufgerufen, wenn die Aktivität erstellt wird.
-
     fun hinzufugen(view: View) {
         // Extrahieren des eingegebenen Texts aus dem EditText-Feld
         val neuerEintrag = eingabeText.text.toString()
@@ -93,7 +92,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "Einkaufsliste geladen")
     }
 
-    // Diese Funktion lädt die Einkaufsliste aus den SharedPreferences.
 
     override fun onStart() {
         super.onStart()
