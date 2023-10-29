@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
+        saveEinkaufsliste(this, eintraege)
         super.onPause()
         Log.d("MyLogAct", "onPause")
     }
