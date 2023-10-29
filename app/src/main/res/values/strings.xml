@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Einkausliste</string>
+    <string name="app_name">ShoppingList</string>
     <string name="hintergrundbild">Hinzufugen</string>
     <string name="geben_sie_hier_ihren_text_ein">Produktnamen hier eingeben</string>
     <string name="add"> + </string>
