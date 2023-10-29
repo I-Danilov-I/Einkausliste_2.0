@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity() {
 
     // Diese Funktion wird aufgerufen, wenn die Aktivität pausiert wird.
     override fun onPause() {
+        saveEinkaufsliste()
         super.onPause()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onPause")
@@ -106,6 +107,7 @@ class MainActivity : AppCompatActivity() {
 
     // Diese Funktion wird aufgerufen, wenn die Aktivität gestoppt wird.
     override fun onStop() {
+        saveEinkaufsliste()
         super.onStop()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onStop")
