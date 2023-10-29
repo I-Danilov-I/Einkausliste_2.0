@@ -1,3 +1,5 @@
+
+// Importieren von erforderlichen Klassen und Bibliotheken
 package com.example.einkausliste
 import android.os.Bundle
 import android.view.View
@@ -10,8 +12,11 @@ import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.example.einkausliste.TextBlinker
 
+
+
 @UnstableApi
 class MainActivity : AppCompatActivity() {
+    // Deklaration der Variablen für Benutzeroberflächenelemente
     lateinit var eingabeText: EditText // Das EditText-Feld zur Eingabe neuer Einträge
     lateinit var hinzufugenButton: Button // Der Button zum Hinzufügen neuer Einträge
     lateinit var adapter: ArrayAdapter<String> // Der Adapter für die ListView
@@ -19,40 +24,27 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Setzen des Layouts für die Aktivität aus der XML-Datei
         setContentView(R.layout.activity_main)
 
         // Initialisierung der Benutzeroberfläche
         setupUI()
 
         // Laden der Einkaufsliste aus den SharedPreferences
+
         loadEinkaufsliste()
 
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onCreate")
     }
 
-    // Diese Funktion wird aufgerufen, wenn die Aktivität erstellt wird.
+    // Handler-Funktion für den "Hinzufügen"-Button
     fun hinzufugen(view: View) {
-        // Extrahieren des eingegebenen Texts aus dem EditText-Feld
-        val neuerEintrag = eingabeText.text.toString()
-
-        // Überprüfung, ob der eingegebene Text nicht leer ist
-        if (neuerEintrag.isNotEmpty()) {
-            // Hinzufügen des neuen Eintrags zur Liste
-            adapter.add(neuerEintrag)
-            // Benachrichtigung des Adapters über die Änderung der Daten
-            adapter.notifyDataSetChanged()
-            // Löschen des Texts im EditText-Feld
-            eingabeText.text.clear()
-            // Speichern der aktualisierten Einkaufsliste in den SharedPreferences
-            saveEinkaufsliste()
-            // Log-Nachricht zur Anzeige in der Konsole
-            Log.d("MyLogAct", "Eintrag hinzugefügt: $neuerEintrag")
-        }
+        // Rufen Sie die ausgelagerte Funktion auf und übergeben Sie die erforderlichen Parameter.
+        hinzufugen(view, adapter, eingabeText, eintraege)
     }
 
-    // Diese Funktion wird aufgerufen, wenn der "Hinzufügen"-Button geklickt wird.
-
+    // Diese Funktion wird aufgerufen, um die Einkaufsliste in den SharedPreferences zu speichern.
     private fun saveEinkaufsliste() {
         // Konvertieren der Liste der Einkäufe in ein Set
         val eintraegeSet = HashSet(eintraege)
@@ -71,8 +63,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "Einkaufsliste gespeichert")
     }
 
-    // Diese Funktion speichert die Einkaufsliste in den SharedPreferences.
-
+    // Diese Funktion wird aufgerufen, um die Einkaufsliste aus den SharedPreferences zu laden.
     private fun loadEinkaufsliste() {
         // Zugriff auf die SharedPreferences für die Einkaufsliste
         val sharedPreferences = getSharedPreferences("Einkaufsliste", MODE_PRIVATE)
@@ -92,31 +83,35 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "Einkaufsliste geladen")
     }
 
-
+    // Diese Funktion wird aufgerufen, wenn die Aktivität gestartet wird.
     override fun onStart() {
         super.onStart()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onStart")
     }
 
+    // Diese Funktion wird aufgerufen, wenn die Aktivität fortgesetzt wird.
     override fun onResume() {
         super.onResume()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onResume")
     }
 
+    // Diese Funktion wird aufgerufen, wenn die Aktivität pausiert wird.
     override fun onPause() {
         super.onPause()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onPause")
     }
 
+    // Diese Funktion wird aufgerufen, wenn die Aktivität gestoppt wird.
     override fun onStop() {
         super.onStop()
         // Log-Nachricht zur Anzeige in der Konsole
         Log.d("MyLogAct", "onStop")
     }
 
+    // Diese Funktion wird aufgerufen, wenn die Aktivität zerstört wird.
     override fun onDestroy() {
         // Speichern der Einkaufsliste und Stoppen der Textanimation
         saveEinkaufsliste()
@@ -125,5 +120,3 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogAct", "onDestroy")
     }
 }
-
-// Diese Funktionen werden in verschiedenen Lebenszyklusphasen der Aktivität aufgerufen.

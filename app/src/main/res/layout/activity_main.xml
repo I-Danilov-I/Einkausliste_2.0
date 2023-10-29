@@ -28,7 +28,6 @@
         android:layout_marginEnd="35dp"
         android:layout_marginBottom="16dp"
         android:background="@android:drawable/button_onoff_indicator_on"
-        android:onClick="hinzufugen"
         android:text="@string/hinzuf_gen"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_on_secondary"
@@ -38,7 +37,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eingabeText"
-        tools:ignore="VisualLintButtonSize" />
+        tools:ignore="VisualLintButtonSize"
+        android:onClick="hinzufugen" />
 
 
     <ListView
